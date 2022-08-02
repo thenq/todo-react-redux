@@ -1,7 +1,7 @@
 import { Col, Row, Input, Typography, Radio, Select, Tag } from 'antd'
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { addFilterPriority, addFilterStatus, addSearchFilter } from '../../store/todo/todoActions'
+import todoSlice from '../../store/todo/todoSlice'
 
 const { Search } = Input
 
@@ -12,15 +12,15 @@ export default function Filters() {
   const [filterPriority, setFilterPriority] = useState([])
 
   useEffect(() => {
-    dispatch(addSearchFilter(searchValue))
+    dispatch(todoSlice.actions.addFilterSearch(searchValue))
   }, [searchValue, dispatch])
 
   useEffect(() => {
-    dispatch(addFilterStatus(filterStatus))
+    dispatch(todoSlice.actions.addFilterStatus(filterStatus))
   }, [filterStatus, dispatch])
 
   useEffect(() => {
-    dispatch(addFilterPriority(filterPriority))
+    dispatch(todoSlice.actions.addFilterPriority(filterPriority))
   }, [filterPriority, dispatch])
 
   return (

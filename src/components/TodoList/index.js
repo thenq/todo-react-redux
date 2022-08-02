@@ -1,10 +1,10 @@
 import { Col, Row, Input, Button, Select, Tag } from 'antd'
 import { useState, memo, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addTodo } from '../../store/todo/todoActions'
 import Todo from '../Todo'
 import { v4 as uuidv4 } from 'uuid'
 import { getTodoListWithFilter } from '../../store/todo/totoSelectors'
+import todoSlice from '../../store/todo/todoSlice'
 
 const TodoList = function () {
   const [valueInput, setValueInput] = useState('Learn React')
@@ -31,7 +31,7 @@ const TodoList = function () {
     dispatchAddTodo(product)
   }
 
-  const dispatchAddTodo = useCallback((product) => dispatch(addTodo(product)), [dispatch])
+  const dispatchAddTodo = useCallback((product) => dispatch(todoSlice.actions.addTodo(product)), [dispatch])
 
   return (
     <Row style={{ height: 'calc(100% - 40px)' }}>
