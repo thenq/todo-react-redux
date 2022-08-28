@@ -1,33 +1,51 @@
-import { Row, Tag, Checkbox } from 'antd';
-import { useState } from 'react';
+import { Row, Tag, Checkbox, Col } from 'antd'
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { deleteTodo, updateCompleteTodo } from '../../store/todo/todoActions'
 
 const priorityColorMapping = {
   High: 'red',
   Medium: 'blue',
   Low: 'gray',
-};
+}
 
-export default function Todo({ name, prioriry }) {
-  const [checked, setChecked] = useState(false);
+export default function Todo({ todo }) {
+  const [checked, setChecked] = useState(todo.completed)
+  const dispatch = useDispatch()
 
   const toggleCheckbox = () => {
-    setChecked(!checked);
-  };
+    setChecked((pre) => {
+      dispatch(updateCompleteTodo({ id: todo.id, completed: !pre }))
+
+      return !pre
+    })
+  }
+
+  const handleDeleteTodo = () => {
+    dispatch(deleteTodo(todo.id))
+  }
 
   return (
     <Row
-      justify='space-between'
+      justify="space-between"
       style={{
         marginBottom: 3,
         ...(checked ? { opacity: 0.5, textDecoration: 'line-through' } : {}),
       }}
     >
-      <Checkbox checked={checked} onChange={toggleCheckbox}>
-        {name}
-      </Checkbox>
-      <Tag color={priorityColorMapping[prioriry]} style={{ margin: 0 }}>
-        {prioriry}
-      </Tag>
+      <Col>
+        <Checkbox checked={checked} onChange={toggleCheckbox}>
+          {todo.name}
+        </Checkbox>
+      </Col>
+      <Col>
+        <Tag color={priorityColorMapping[todo.priority]} style={{ margin: 0 }}>
+          {todo.priority}
+        </Tag>
+        <Tag color="red" style={{ margin: 5, cursor: 'pointer' }} onClick={handleDeleteTodo}>
+          X
+        </Tag>
+      </Col>
     </Row>
-  );
+  )
 }
